@@ -11,7 +11,7 @@ import {
 export default function HeroSection() {
   return (
     <div className="flex justify-center items-center h-svh">
-      <Card className="relative -top-[25%]">
+      <Card className="relative -top-[15%]">
         <CardHeader>
           <CardTitle>Welcome To my Portfolio website!</CardTitle>
           <CardDescription>This is still undone yet !!</CardDescription>
