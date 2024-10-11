@@ -1,7 +1,5 @@
 import {
-  Link,
   Outlet,
-  createRootRoute,
   createRootRouteWithContext,
   useMatches,
 } from "@tanstack/react-router";
@@ -38,30 +36,14 @@ function RootComponent() {
     });
   }, [matches]);
 
-  return (
-    <>
-      <div className="p-2 flex gap-2 text-lg">
-        <Link
-          to="/"
-          activeProps={{
-            className: "font-bold",
-          }}
-          activeOptions={{ exact: true }}
-        >
-          Home
-        </Link>{" "}
-        <Link
-          to="/about"
-          activeProps={{
-            className: "font-bold",
-          }}
-        >
-          About
-        </Link>
-      </div>
-      <hr />
-      <Outlet />
-      <TanStackRouterDevtools position="bottom-right" />
-    </>
-  );
+  if (import.meta.env.DEV) {
+    return (
+      <>
+        <Outlet />
+        <TanStackRouterDevtools position="bottom-right" />
+      </>
+    );
+  }
+
+  return <Outlet />;
 }
