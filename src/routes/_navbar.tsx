@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_navbar")({
 
 function Navbar() {
   return (
-    <div className="w-svw h-svh">
+    <div className="flex flex-col-reverse md:flex-col  w-svw h-svh">
       <div className="w-full h-12 pt-2 flex justify-center items-center">
         <Tabs defaultValue="Home">
           <TabsList>
