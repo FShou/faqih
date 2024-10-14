@@ -30,8 +30,7 @@ function HomeComponent() {
         <div className="basis-1/2 flex items-center justify-center ">
           <Card className="p-3">
             <Card className="size-[250px] md:size-[600px] object-fit overflow-hidden">
-              {/* TODO: Move img src to public */}
-              <img src="https://private-user-images.githubusercontent.com/110684084/376100166-a6c63c61-fff2-4bb5-9a52-83665327714b.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mjg4NzYzMTgsIm5iZiI6MTcyODg3NjAxOCwicGF0aCI6Ii8xMTA2ODQwODQvMzc2MTAwMTY2LWE2YzYzYzYxLWZmZjItNGJiNS05YTUyLTgzNjY1MzI3NzE0Yi5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQxMDE0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MTAxNFQwMzIwMThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hOGYwMzQzNWYzMTA1NDRkZTA5ZTc2OWZjNjYzNzkyNTllZjFhYTQwNjE1NmVhYmQ4NTljOTAxMjk5YmRiMDQ0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.yPBOTW33uAwtZ3_vArsjPF9QE-gNjlndOdiqG-688is" />
+              <img src="/my-pic.jpg" />
             </Card>
           </Card>
         </div>
