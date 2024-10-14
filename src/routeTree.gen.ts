@@ -11,59 +11,145 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
+import { Route as NavbarImport } from './routes/_navbar'
+import { Route as NavbarIndexImport } from './routes/_navbar/index'
+import { Route as NavbarAboutImport } from './routes/_navbar/about'
+import { Route as NavbarProjectsIndexImport } from './routes/_navbar/projects/index'
+import { Route as NavbarBlogsIndexImport } from './routes/_navbar/blogs/index'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const NavbarRoute = NavbarImport.update({
+  id: '/_navbar',
   getParentRoute: () => rootRoute,
+} as any)
+
+const NavbarIndexRoute = NavbarIndexImport.update({
+  path: '/',
+  getParentRoute: () => NavbarRoute,
+} as any)
+
+const NavbarAboutRoute = NavbarAboutImport.update({
+  path: '/about',
+  getParentRoute: () => NavbarRoute,
+} as any)
+
+const NavbarProjectsIndexRoute = NavbarProjectsIndexImport.update({
+  path: '/projects/',
+  getParentRoute: () => NavbarRoute,
+} as any)
+
+const NavbarBlogsIndexRoute = NavbarBlogsIndexImport.update({
+  path: '/blogs/',
+  getParentRoute: () => NavbarRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_navbar': {
+      id: '/_navbar'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof NavbarImport
+      parentRoute: typeof rootRoute
+    }
+    '/_navbar/about': {
+      id: '/_navbar/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof NavbarAboutImport
+      parentRoute: typeof NavbarImport
+    }
+    '/_navbar/': {
+      id: '/_navbar/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof NavbarIndexImport
+      parentRoute: typeof NavbarImport
+    }
+    '/_navbar/blogs/': {
+      id: '/_navbar/blogs/'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof NavbarBlogsIndexImport
+      parentRoute: typeof NavbarImport
+    }
+    '/_navbar/projects/': {
+      id: '/_navbar/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof NavbarProjectsIndexImport
+      parentRoute: typeof NavbarImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface NavbarRouteChildren {
+  NavbarAboutRoute: typeof NavbarAboutRoute
+  NavbarIndexRoute: typeof NavbarIndexRoute
+  NavbarBlogsIndexRoute: typeof NavbarBlogsIndexRoute
+  NavbarProjectsIndexRoute: typeof NavbarProjectsIndexRoute
+}
+
+const NavbarRouteChildren: NavbarRouteChildren = {
+  NavbarAboutRoute: NavbarAboutRoute,
+  NavbarIndexRoute: NavbarIndexRoute,
+  NavbarBlogsIndexRoute: NavbarBlogsIndexRoute,
+  NavbarProjectsIndexRoute: NavbarProjectsIndexRoute,
+}
+
+const NavbarRouteWithChildren =
+  NavbarRoute._addFileChildren(NavbarRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '': typeof NavbarRouteWithChildren
+  '/about': typeof NavbarAboutRoute
+  '/': typeof NavbarIndexRoute
+  '/blogs': typeof NavbarBlogsIndexRoute
+  '/projects': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/about': typeof NavbarAboutRoute
+  '/': typeof NavbarIndexRoute
+  '/blogs': typeof NavbarBlogsIndexRoute
+  '/projects': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/_navbar': typeof NavbarRouteWithChildren
+  '/_navbar/about': typeof NavbarAboutRoute
+  '/_navbar/': typeof NavbarIndexRoute
+  '/_navbar/blogs/': typeof NavbarBlogsIndexRoute
+  '/_navbar/projects/': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '' | '/about' | '/' | '/blogs' | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/about' | '/' | '/blogs' | '/projects'
+  id:
+    | '__root__'
+    | '/_navbar'
+    | '/_navbar/about'
+    | '/_navbar/'
+    | '/_navbar/blogs/'
+    | '/_navbar/projects/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  NavbarRoute: typeof NavbarRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  NavbarRoute: NavbarRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -78,11 +164,33 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/_navbar"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_navbar": {
+      "filePath": "_navbar.tsx",
+      "children": [
+        "/_navbar/about",
+        "/_navbar/",
+        "/_navbar/blogs/",
+        "/_navbar/projects/"
+      ]
+    },
+    "/_navbar/about": {
+      "filePath": "_navbar/about.tsx",
+      "parent": "/_navbar"
+    },
+    "/_navbar/": {
+      "filePath": "_navbar/index.tsx",
+      "parent": "/_navbar"
+    },
+    "/_navbar/blogs/": {
+      "filePath": "_navbar/blogs/index.tsx",
+      "parent": "/_navbar"
+    },
+    "/_navbar/projects/": {
+      "filePath": "_navbar/projects/index.tsx",
+      "parent": "/_navbar"
     }
   }
 }

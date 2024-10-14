@@ -23,9 +23,6 @@ function RootComponent() {
     const breadcrumbPromises = [...matches]
       .reverse()
       .map((match) => {
-        if (!("getTitle" in match.context)) {
-          return undefined;
-        }
         const { context } = match;
         return context.getTitle();
       })
