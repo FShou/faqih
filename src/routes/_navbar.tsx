@@ -8,20 +8,26 @@ export const Route = createFileRoute("/_navbar")({
 });
 
 function Navbar() {
+  const navItems = [
+    { title: "Home", route: "/" },
+    { title: "About", route: "/about" },
+    { title: "Projects", route: "/projects" },
+    { title: "Blog", route: "/blogs" },
+  ];
   return (
     <div className="flex flex-col-reverse md:flex-col  w-svw h-svh">
       <div className="w-full h-12 pt-2 flex justify-center items-center">
         <Tabs defaultValue="Home">
           <TabsList>
-            <TabsTrigger value="Home">Home</TabsTrigger>
-            <TabsTrigger value="About">About Me</TabsTrigger>
-            <TabsTrigger value="Projects">Projects</TabsTrigger>
-            <TabsTrigger value="Blog">Blog</TabsTrigger>
+            {navItems.map((it) => (
+              <TabsTrigger value={it.title}>{it.title}</TabsTrigger>
+            ))}
           </TabsList>
-          <TabsContent value="Home"><Navigate to="/" /></TabsContent>
-          <TabsContent value="About"> <Navigate to="/about" /></TabsContent>
-          <TabsContent value="Projects"> <Navigate to="/projects" /></TabsContent>
-          <TabsContent value="Blog"> <Navigate to="/blogs" /></TabsContent>
+          {navItems.map((it) => (
+            <TabsContent value={it.title}>
+              <Navigate to={it.route} />
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
       <Outlet />
