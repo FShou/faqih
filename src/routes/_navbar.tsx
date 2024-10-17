@@ -9,7 +9,11 @@ export const Route = createFileRoute("/_navbar")({
 
 function Navbar() {
 
-  const pathname = useRouterState().location.pathname
+  // Slice last char so when user get into '/projects/' it's still valid 
+  const pathname = useRouterState()
+    .location
+    .pathname
+    .slice(0,-1)
     
   
   const navItems = [
