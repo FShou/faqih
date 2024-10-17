@@ -27,7 +27,7 @@ function AboutComponent() {
           </div>
 
         </Card>
-        <Card className="m-2 md:m-4 p-8 basis-1/3">
+        <Card className="m-2 md:m-4 p-8 basis-1/3 overflow-scroll">
           <h2 className="border-b pb-2 mb-3 text-2xl font-semibold tracking-tight first:mt-0">
             My Experiences
           </h2>
