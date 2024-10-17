@@ -53,7 +53,7 @@ export default function Experiences() {
             <Card className="mb-4 p-3">
               <p className="font-semibold text-lg">{it.position}</p>
               <p className="text-primary/80 text-sm">{it.company}</p>
-              <p className="mt-1 ">{it.description}</p>
+              <p className="mt-1 text-primary/95">{it.description}</p>
             </Card>
           </>
         );
