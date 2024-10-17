@@ -13,8 +13,9 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as NavbarImport } from './routes/_navbar'
 import { Route as NavbarIndexImport } from './routes/_navbar/index'
+import { Route as ProjectsProjectIdImport } from './routes/projects/$projectId'
+import { Route as NavbarProjectsImport } from './routes/_navbar/projects'
 import { Route as NavbarAboutImport } from './routes/_navbar/about'
-import { Route as NavbarProjectsIndexImport } from './routes/_navbar/projects/index'
 import { Route as NavbarBlogsIndexImport } from './routes/_navbar/blogs/index'
 
 // Create/Update Routes
@@ -29,13 +30,18 @@ const NavbarIndexRoute = NavbarIndexImport.update({
   getParentRoute: () => NavbarRoute,
 } as any)
 
-const NavbarAboutRoute = NavbarAboutImport.update({
-  path: '/about',
+const ProjectsProjectIdRoute = ProjectsProjectIdImport.update({
+  path: '/projects/$projectId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NavbarProjectsRoute = NavbarProjectsImport.update({
+  path: '/projects',
   getParentRoute: () => NavbarRoute,
 } as any)
 
-const NavbarProjectsIndexRoute = NavbarProjectsIndexImport.update({
-  path: '/projects/',
+const NavbarAboutRoute = NavbarAboutImport.update({
+  path: '/about',
   getParentRoute: () => NavbarRoute,
 } as any)
 
@@ -62,6 +68,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NavbarAboutImport
       parentRoute: typeof NavbarImport
     }
+    '/_navbar/projects': {
+      id: '/_navbar/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof NavbarProjectsImport
+      parentRoute: typeof NavbarImport
+    }
+    '/projects/$projectId': {
+      id: '/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof ProjectsProjectIdImport
+      parentRoute: typeof rootRoute
+    }
     '/_navbar/': {
       id: '/_navbar/'
       path: '/'
@@ -76,13 +96,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NavbarBlogsIndexImport
       parentRoute: typeof NavbarImport
     }
-    '/_navbar/projects/': {
-      id: '/_navbar/projects/'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof NavbarProjectsIndexImport
-      parentRoute: typeof NavbarImport
-    }
   }
 }
 
@@ -90,16 +103,16 @@ declare module '@tanstack/react-router' {
 
 interface NavbarRouteChildren {
   NavbarAboutRoute: typeof NavbarAboutRoute
+  NavbarProjectsRoute: typeof NavbarProjectsRoute
   NavbarIndexRoute: typeof NavbarIndexRoute
   NavbarBlogsIndexRoute: typeof NavbarBlogsIndexRoute
-  NavbarProjectsIndexRoute: typeof NavbarProjectsIndexRoute
 }
 
 const NavbarRouteChildren: NavbarRouteChildren = {
   NavbarAboutRoute: NavbarAboutRoute,
+  NavbarProjectsRoute: NavbarProjectsRoute,
   NavbarIndexRoute: NavbarIndexRoute,
   NavbarBlogsIndexRoute: NavbarBlogsIndexRoute,
-  NavbarProjectsIndexRoute: NavbarProjectsIndexRoute,
 }
 
 const NavbarRouteWithChildren =
@@ -108,48 +121,60 @@ const NavbarRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof NavbarRouteWithChildren
   '/about': typeof NavbarAboutRoute
+  '/projects': typeof NavbarProjectsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/': typeof NavbarIndexRoute
   '/blogs': typeof NavbarBlogsIndexRoute
-  '/projects': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/about': typeof NavbarAboutRoute
+  '/projects': typeof NavbarProjectsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/': typeof NavbarIndexRoute
   '/blogs': typeof NavbarBlogsIndexRoute
-  '/projects': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_navbar': typeof NavbarRouteWithChildren
   '/_navbar/about': typeof NavbarAboutRoute
+  '/_navbar/projects': typeof NavbarProjectsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/_navbar/': typeof NavbarIndexRoute
   '/_navbar/blogs/': typeof NavbarBlogsIndexRoute
-  '/_navbar/projects/': typeof NavbarProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/about' | '/' | '/blogs' | '/projects'
+  fullPaths:
+    | ''
+    | '/about'
+    | '/projects'
+    | '/projects/$projectId'
+    | '/'
+    | '/blogs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/' | '/blogs' | '/projects'
+  to: '/about' | '/projects' | '/projects/$projectId' | '/' | '/blogs'
   id:
     | '__root__'
     | '/_navbar'
     | '/_navbar/about'
+    | '/_navbar/projects'
+    | '/projects/$projectId'
     | '/_navbar/'
     | '/_navbar/blogs/'
-    | '/_navbar/projects/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   NavbarRoute: typeof NavbarRouteWithChildren
+  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   NavbarRoute: NavbarRouteWithChildren,
+  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -164,21 +189,29 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_navbar"
+        "/_navbar",
+        "/projects/$projectId"
       ]
     },
     "/_navbar": {
       "filePath": "_navbar.tsx",
       "children": [
         "/_navbar/about",
+        "/_navbar/projects",
         "/_navbar/",
-        "/_navbar/blogs/",
-        "/_navbar/projects/"
+        "/_navbar/blogs/"
       ]
     },
     "/_navbar/about": {
       "filePath": "_navbar/about.tsx",
       "parent": "/_navbar"
+    },
+    "/_navbar/projects": {
+      "filePath": "_navbar/projects.tsx",
+      "parent": "/_navbar"
+    },
+    "/projects/$projectId": {
+      "filePath": "projects/$projectId.tsx"
     },
     "/_navbar/": {
       "filePath": "_navbar/index.tsx",
@@ -186,10 +219,6 @@ export const routeTree = rootRoute
     },
     "/_navbar/blogs/": {
       "filePath": "_navbar/blogs/index.tsx",
-      "parent": "/_navbar"
-    },
-    "/_navbar/projects/": {
-      "filePath": "_navbar/projects/index.tsx",
       "parent": "/_navbar"
     }
   }
