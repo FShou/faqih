@@ -1,21 +1,26 @@
-import { promises as fs } from "fs";
-
 export interface Project {
   slug: string;
-  path: string;
+  url: string;
 }
 const projects: Project[] = [];
-const PROJCET_DIR = "./src/content/projects/";
 
 
 async function fetchProject() {
-  const files = await fs.readdir(PROJCET_DIR);
+  const res = await fetch(import.meta.env.VITE_PROJECT_DIR, {
+    headers: {
+      Authorization: `Bearer ${import.meta.env.VITE_GITHUB_API}`
+    }
+  });
+  const files = await res.json()
+  console.log(files)
+  
+  
 
-  for (const fileName of files) {
-    const slug = fileName.replace(".md", "");
-    const path = PROJCET_DIR.concat(fileName);
+  for (const file of files) {
+    const slug = file.name.replace(".md", "");
+    const url = file.download_url
 
-    const project = { slug, path } as Project;
+    const project = { slug, url } as Project;
     projects.push(project);
   }
 }
@@ -27,7 +32,8 @@ export async function getAllProjects() {
 
 export async function getProjectMarkdown(project: Project) {
   try {
-    const markdown = await fs.readFile(project.path);
+    const res = await fetch(project.url);
+    const markdown = await res.text()
     return markdown;
   } catch (error) {
     return error;
