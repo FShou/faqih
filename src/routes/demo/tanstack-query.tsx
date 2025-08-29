@@ -6,7 +6,7 @@ export const Route = createFileRoute('/demo/tanstack-query')({
   component: TanStackQueryDemo,
 })
 
-type Todo = {
+export type Todo = {
   id: number
   name: string
 }
