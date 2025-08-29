@@ -1,46 +1,71 @@
 import {
-  Outlet,
+  HeadContent,
+  Scripts,
   createRootRouteWithContext,
-  useMatches,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { useEffect } from "react";
+} from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanstackDevtools } from '@tanstack/react-devtools'
 
-interface RootContext {
-  getTitle?: () => string | Promise<string>;
+import Header from '../components/Header'
+
+import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
+
+import appCss from '../styles.css?url'
+
+import type { QueryClient } from '@tanstack/react-query'
+
+interface MyRouterContext {
+  queryClient: QueryClient
 }
 
-export const Route = createRootRouteWithContext<RootContext>()({
-  beforeLoad: () => ({ getTitle: () => "Portfolio" }),
-  component: RootComponent,
-});
+export const Route = createRootRouteWithContext<MyRouterContext>()({
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'TanStack Start Starter',
+      },
+    ],
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+    ],
+  }),
 
-function RootComponent() {
-  const matches = useMatches();
+  shellComponent: RootDocument,
+})
 
-  useEffect(() => {
-    // Set document title based on lowest matching route with a title
-    const breadcrumbPromises = [...matches]
-      .reverse()
-      .map((match) => {
-        const { context } = match;
-        return context.getTitle();
-      })
-      .filter(Boolean);
-    void Promise.all(breadcrumbPromises).then((titles) => {
-      document.title = titles.join(" · ");
-      return titles;
-    });
-  }, [matches]);
-
-  if (import.meta.env.DEV) {
-    return (
-      <>
-        <Outlet />
-        <TanStackRouterDevtools position="bottom-right" />
-      </>
-    );
-  }
-
-  return <Outlet />;
+function RootDocument({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <Header />
+        {children}
+        <TanstackDevtools
+          config={{
+            position: 'bottom-left',
+          }}
+          plugins={[
+            {
+              name: 'Tanstack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            TanStackQueryDevtools,
+          ]}
+        />
+        <Scripts />
+      </body>
+    </html>
+  )
 }
