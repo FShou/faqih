@@ -1,22 +1,18 @@
-import fs from 'node:fs'
 import { useCallback, useState } from 'react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Todo } from './tanstack-query'
 
-const filePath = 'todos.json'
 
 async function readTodos() {
   return JSON.parse(
-    await fs.promises.readFile(filePath, 'utf-8').catch(() =>
-      JSON.stringify(
-        [
-          { id: 1, name: 'Get groceries' },
-          { id: 2, name: 'Buy a new phone' },
-        ],
-        null,
-        2,
-      ),
+    JSON.stringify(
+      [
+        { id: 1, name: 'Get groceries' },
+        { id: 2, name: 'Buy a new phone' },
+      ],
+      null,
+      2,
     ),
   )
 }
@@ -30,7 +26,6 @@ const addTodo = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const todos = await readTodos()
     todos.push({ id: todos.length + 1, name: data })
-    await fs.promises.writeFile(filePath, JSON.stringify(todos, null, 2))
     return todos
   })
 
